@@ -41,7 +41,7 @@ var functions = {
   },
   getBankDetails: (req, res) => {
     BankDetails.find().then((bank) => {
-      res.status(200).json({ bank: bank });
+      res.status(200).json(bank);
     });
   },
   getBankDetailsById: (req, res) => {
