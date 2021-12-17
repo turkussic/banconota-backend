@@ -3,41 +3,61 @@ var BankDetails = require("../../models/bankDetails");
 var functions = {
   addBankDetails: (req, res) => {
     // Check if request body exist
-    if (
-      !req.body.bankName ||
-      !req.body.feeOfSendingMoney ||
-      !req.body.costOfMaintenance ||
-      !req.body.conversionFee
-    ) {
-      res.status(400).json({ success: false, msg: "Enter all fields" });
-    } else {
-      var newBankDetails = BankDetails({
-        bankName: req.body.bankName,
-        feeOfSendingMoney: req.body.feeOfSendingMoney,
-        costOfMaintenance: req.body.costOfMaintenance,
-        conversionFee: req.body.conversionFee,
-      });
-      // Check if bank exist
-      BankDetails.find({
-        bankName: req.body.bankName,
-      }).then((result) => {
-        if (!result || result.length === 0)
-          newBankDetails.save((err, newBankDetails) => {
-            if (err) {
-              res
-                .status(400)
-                .json({ success: false, msg: "Failed to save bank details." });
-            } else {
-              res.json(newBankDetails);
-            }
-          });
-        else
-          res.status(400).json({
-            success: false,
-            msg: "Bank with that name already exist",
-          });
-      });
-    }
+    // if (
+    //   !req.body.isLocal ||
+    //   !req.body.bankName ||
+    //   !req.body.address ||
+    //   !req.body.fax ||
+    //   !req.body.phone ||
+    //   !req.body.boardChairman ||
+    //   !req.body.email ||
+    //   !req.body.t0 ||
+    //   !req.body.t1 ||
+    //   !req.body.t2 ||
+    //   !req.body.t3 ||
+    //   !req.body.feeOfSending ||
+    //   !req.body.feeOfReceiving ||
+    //   !req.body.conversionRate
+    // ) {
+    //   res.status(400).json({ success: false, msg: "Enter all fields" });
+    // } else {
+    var newBankDetails = BankDetails({
+      isLocal: req.body.isLocal,
+      bankName: req.body.bankName,
+      address: req.body.address,
+      fax: req.body.fax,
+      phone: req.body.phone,
+      boardChairman: req.body.boardChairman,
+      email: req.body.email,
+      t0: req.body.t0,
+      t1: req.body.t1,
+      t2: req.body.t2,
+      t3: req.body.t3,
+      feeOfSending: req.body.feeOfSending,
+      feeOfReceiving: req.body.feeOfReceiving,
+      conversionRate: req.body.conversionRate,
+    });
+    // Check if bank exist
+    BankDetails.find({
+      bankName: req.body.bankName,
+    }).then((result) => {
+      if (!result || result.length === 0)
+        newBankDetails.save((err, newBankDetails) => {
+          if (err) {
+            res
+              .status(400)
+              .json({ success: false, msg: "Failed to save bank details." });
+          } else {
+            res.json(newBankDetails);
+          }
+        });
+      else
+        res.status(400).json({
+          success: false,
+          msg: "Bank with that name already exist",
+        });
+    });
+    // }
   },
   getBankDetails: (req, res) => {
     BankDetails.find().then((bank) => {
@@ -58,10 +78,20 @@ var functions = {
     BankDetails.updateOne(
       { _id: req.params.id },
       {
+        isLocal: req.body.isLocal,
         bankName: req.body.bankName,
-        feeOfSendingMoney: req.body.feeOfSendingMoney,
-        costOfMaintenance: req.body.costOfMaintenance,
-        conversionFee: req.body.conversionFee,
+        address: req.body.address,
+        fax: req.body.fax,
+        phone: req.body.phone,
+        boardChairman: req.body.boardChairman,
+        email: req.body.email,
+        t0: req.body.t0,
+        t1: req.body.t1,
+        t2: req.body.t2,
+        t3: req.body.t3,
+        feeOfSending: req.body.feeOfSending,
+        feeOfReceiving: req.body.feeOfReceiving,
+        conversionRate: req.body.conversionRate,
       }
     ).then((bank) => {
       if (!req.params.id)
